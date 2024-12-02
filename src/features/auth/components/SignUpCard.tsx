@@ -25,6 +25,7 @@ import Image from "next/image"
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link"
+import { useSignup } from "../api/useSignup"
 
 const formSchema = z.object({
     name: z.string().min(1, "Name required"),
@@ -33,6 +34,8 @@ const formSchema = z.object({
 })
 
 export const SignUpCard = () => {
+
+    const {mutate} = useSignup()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,7 +48,7 @@ export const SignUpCard = () => {
     })
 
     const onSubmit = (value: z.infer<typeof formSchema>) => {
-        console.log({value})
+        mutate(value)
     }
 
     return (

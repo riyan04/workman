@@ -27,6 +27,7 @@ import Image from "next/image"
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link"
+import { useLogin } from "../api/useLogin"
 
 
 
@@ -36,6 +37,7 @@ const formSchema = z.object({
 })
 
 export const SignInCard = () => {
+    const {mutate} = useLogin()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
@@ -45,7 +47,7 @@ export const SignInCard = () => {
     })
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log({values})
+        mutate(values)
     }
 
     return (
