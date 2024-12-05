@@ -2,6 +2,7 @@
 import { POST } from "@/app/api/auth/login/route";
 // import { loginSchema } from "@/lib/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 // import { z } from "zod";
 
 // type RequestProps =  z.infer<typeof loginSchema>
@@ -13,6 +14,7 @@ type ResType = typeof POST
 
 
 export const useLogout = () => {
+    const router = useRouter()
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error>({
         mutationFn: async() => {
@@ -24,6 +26,7 @@ export const useLogout = () => {
         },
 
         onSuccess: () => {
+            router.refresh()
             queryClient.invalidateQueries({queryKey: ["current"]})
         }
         

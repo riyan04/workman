@@ -1,3 +1,5 @@
+"use client"
+
 import { useForm } from "react-hook-form"
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -35,7 +37,7 @@ const formSchema = z.object({
 
 export const SignUpCard = () => {
 
-    const {mutate} = useSignup()
+    const {mutate, isPending} = useSignup()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -107,7 +109,7 @@ export const SignUpCard = () => {
                             )}
                         />
                         
-                        <Button disabled={false} size={"lg"} className=" w-full"> Sign Up</Button>
+                        <Button disabled={isPending} size={"lg"} className=" w-full"> Sign Up</Button>
                     </form>
                 </Form>
 
@@ -118,8 +120,8 @@ export const SignUpCard = () => {
             </div>
 
             <CardContent className=" p-7 flex items-center justify-center gap-2">
-                <Button variant={"secondary"}> <FcGoogle />Sign Up with Google</Button>
-                <Button variant={"secondary"}> <FaGithub />Sign Up with GitHub</Button>
+                <Button disabled={isPending} variant={"secondary"}> <FcGoogle />Sign Up with Google</Button>
+                <Button disabled={isPending} variant={"secondary"}> <FaGithub />Sign Up with GitHub</Button>
             </CardContent>
 
             <div className="px-7">
