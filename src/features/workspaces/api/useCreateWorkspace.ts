@@ -17,10 +17,13 @@ type ResType = typeof POST
 export const useCreateWorkspace = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
-        mutationFn: async(json) => {
+        mutationFn: async(form) => {
+            const formData = new FormData()
+            formData.append("name", form.name)
+            formData.append("image", form.image!)
             const response = await fetch('http://localhost:3000/api/workspaces', {
                 method: 'POST',
-                body: JSON.stringify(json)
+                body: formData
             })
             // console.log(await response.json())
             return await response.json();
