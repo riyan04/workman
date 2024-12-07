@@ -1,7 +1,9 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { Account, Client, Databases, Storage} from 'node-appwrite'
+import { Account, Client, 
+	// Databases, Storage
+} from 'node-appwrite'
 
 // export interface UserRequest extends NextRequest{
 // 	account: AccountType,
@@ -18,7 +20,8 @@ import { Account, Client, Databases, Storage} from 'node-appwrite'
 // }
 
 export async function middleware(request: NextRequest){
-	if (request.nextUrl.pathname.startsWith('/api/auth/logout') || request.nextUrl.pathname.startsWith('/api/auth/get-user')) {
+	if (request.nextUrl.pathname.startsWith('/api/auth/logout') || request.nextUrl.pathname.startsWith('/api/auth/get-user') 
+		|| request.nextUrl.pathname.startsWith('/api/workspaces')) {
 		// console.log("into the middleware")
 		const client = new Client()
 			.setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
@@ -33,8 +36,8 @@ export async function middleware(request: NextRequest){
 		client.setSession(session.value)
 
 		const account = new Account(client)
-		const databases = new Databases(client)
-		const storage = new Storage(client)
+		// const databases = new Databases(client)
+		// const storage = new Storage(client)
 		// console.log(account)
 
 
@@ -46,9 +49,10 @@ export async function middleware(request: NextRequest){
 		// request.databases = databases
 		// request.storage = storage
 		
-		res.headers.set("account", JSON.stringify(account))
-		res.headers.set("databases", JSON.stringify(databases))
-		res.headers.set("storage", JSON.stringify(storage))
+		// res.headers.set("account", JSON.stringify(account))
+		// res.headers.set("databases", JSON.stringify(databases))
+		// res.headers.set("storage", JSON.stringify(storage))
+
 		res.headers.set("user", JSON.stringify(user))
 
 		return res
