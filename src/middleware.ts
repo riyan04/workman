@@ -19,7 +19,7 @@ import { Account, Client, Databases, Storage} from 'node-appwrite'
 
 export async function middleware(request: NextRequest){
 	if (request.nextUrl.pathname.startsWith('/api/auth/logout') || request.nextUrl.pathname.startsWith('/api/auth/get-user')) {
-		console.log("into the middleware")
+		// console.log("into the middleware")
 		const client = new Client()
 			.setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
 			.setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest){
 		const account = new Account(client)
 		const databases = new Databases(client)
 		const storage = new Storage(client)
-		console.log(account)
+		// console.log(account)
 
 
 		const user = await account.get()
