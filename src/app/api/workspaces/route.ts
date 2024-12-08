@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ID, Models} from "node-appwrite";
+import { ID, Models, Query} from "node-appwrite";
 import {getUserProperties} from '@/features/auth/actions'
+import { MemberRole } from "@/features/members/types";
+import { generateInviteCode } from "@/lib/utils";
 // import { error } from "console";
 
 export async function POST (request: NextRequest) {
@@ -43,6 +45,8 @@ export async function POST (request: NextRequest) {
         // console.log(uploadedImageUrl)
     }
 
+    const inviteCode = generateInviteCode(6)
+
     const workspace = await databases?.createDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID!,
@@ -50,14 +54,30 @@ export async function POST (request: NextRequest) {
         {
             name,
             userId: user.$id,
-            imageUrl: uploadedImageUrl
+            imageUrl: uploadedImageUrl,
+            inviteCode: inviteCode
         }
     )
+
+    await databases.createDocument(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_MEMBERS_ID!,
+        ID.unique(),
+        {
+            userId: user.$id,
+            workspaceId: workspace.$id,
+            role: MemberRole.ADMIN
+        }
+
+    );
     return NextResponse.json({data: workspace})
 }
 
 
-export async function GET()  {
+export async function GET(request: NextRequest)  {
+    const userHeader = request.headers.get("user")
+    const user: Models.User<Models.Preferences>  = JSON.parse(userHeader!);
+
     const userProperties = await getUserProperties()
 
     if(!userProperties){
@@ -66,9 +86,28 @@ export async function GET()  {
 
     const databases = userProperties?.databases
 
+
+    const members = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_MEMBERS_ID!,
+        [Query.equal("userId", user.$id)]
+    );
+
+    if(members.total === 0){
+        return NextResponse.json({data: {documents: [], total: 0}})
+    }
+
+    const workspaceIds = members.documents.map((member) => (
+        member.workspaceId
+    ))
+
     const workspaces = await databases.listDocuments(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
-        process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID!
+        process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID!,
+        [
+            Query.orderDesc("$createdAt"),
+            Query.contains("$id", workspaceIds)
+        ]
     )
 
     return NextResponse.json({data: workspaces})
