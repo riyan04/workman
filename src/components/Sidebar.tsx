@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
 import Navigation from "./Navigation"
+import WorkspaceSwitcher from "./WorkspaceSwitcher"
 
 
 const Sidebar = () => {
@@ -13,6 +14,8 @@ const Sidebar = () => {
                     <h1 className=" text-2xl font-serif">Workman</h1>
                 </div>
             </Link>
+            <Separator className=" my-4" />
+            <WorkspaceSwitcher />
             <Separator className=" my-4" />
             <Navigation />
         </aside>

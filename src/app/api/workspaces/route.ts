@@ -11,7 +11,10 @@ export async function POST (request: NextRequest) {
     const user: Models.User<Models.Preferences>  = JSON.parse(userHeader!);
 
     const userProperties = await getUserProperties();
-
+    
+    if(!userProperties){
+        return NextResponse.json({error: "Unable to get userProperties: ./api/workspace"}, {status: 501})
+    }
     const databases = userProperties?.databases
     const storage = userProperties?.storage
 
@@ -20,9 +23,6 @@ export async function POST (request: NextRequest) {
     const image = formData.get("image")
     // console.log({name, image})
 
-    if(storage === undefined){
-        return NextResponse.json({error: "Unable to get storage: ./api/workspace"}, {status: 501})
-    }
 
     let uploadedImageUrl: string | undefined;
 
@@ -54,4 +54,24 @@ export async function POST (request: NextRequest) {
         }
     )
     return NextResponse.json({data: workspace})
+}
+
+
+export async function GET()  {
+    const userProperties = await getUserProperties()
+
+    if(!userProperties){
+        return NextResponse.json({error: "Unable to get userProperties: ./api/workspace"}, {status: 501})
+    }
+
+    const databases = userProperties?.databases
+
+    const workspaces = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID!
+    )
+
+    return NextResponse.json({data: workspaces})
+
+    // return NextResponse.json({message: "welcome to the workspaces"})
 }
