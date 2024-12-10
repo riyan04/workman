@@ -1,20 +1,24 @@
 
 
-import { POST } from "@/app/api/workspaces/route"
+// import { POST } from "@/app/api/workspaces/route"
 import { createWorkspaceSchema } from "../schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { toast } from "sonner";
+import { Models } from "node-appwrite";
+import { useRouter } from "next/navigation";
 
 type RequestProps =  z.infer<typeof createWorkspaceSchema>
 // type ResponseProps = {
 //     success: string
 // }
 
-type ResType = typeof POST
+type ResType = {data: Models.Document}
+// type ResType = typeof POST: NextResponse<{data: Models.Document}>
 
 
 export const useCreateWorkspace = () => {
+    const router = useRouter()
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async(form) => {
@@ -26,10 +30,15 @@ export const useCreateWorkspace = () => {
                 body: formData
             })
             // console.log(await response.json())
-            return await response.json();
+            const res: {data: Models.Document} = await response.json()
+            // return await response.json();
+            return res
         },
-        onSuccess: () => {
+        onSuccess: ({data}) => {
             toast.success("Workspace created")
+            // console.log("reached Here, useCreateWorkspace", data.$id)
+            router.push(`/workspaces/${data.$id}`)
+
             queryClient.invalidateQueries({queryKey: ["workspaces"]})
         },
         onError: () => {

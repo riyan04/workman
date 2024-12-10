@@ -43,12 +43,13 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormPorps) => {
             ...values,
             image: values.image instanceof File ? values.image : "",
         };
-        // const formData = new FormData()
-        // formData.append("name", values.name)
-        // formData.append("image", values.image instanceof File ? values.image : "")
+        
         mutate(finalValues, {
             onSuccess: () => {
-                form.reset()
+                // console.log("reached here, CreateWorkspaceForm")
+                form.reset();
+                onCancel?.();
+                // router.push(`/workspaces/${data.$id}`);
             }
         })
         
