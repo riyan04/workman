@@ -21,6 +21,7 @@ import { useRef } from "react"
 import Image from "next/image"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ImageIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface CreateWorkspaceFormPorps {
     onCancel?: () => void
@@ -150,7 +151,11 @@ const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormPorps) => {
                         </div>
                         {/* <Separator className=" py-7" /> */}
                         <div className=" flex items-center justify-between">
-                            <Button disabled={isPending} type="button" size={"lg"} variant={"secondary"} onClick={onCancel}>
+                            <Button
+                                className={cn(
+                                    !onCancel && "invisible"
+                                )}
+                             disabled={isPending} type="button" size={"lg"} variant={"secondary"} onClick={onCancel}>
                                 Cancel
                             </Button>
                             <Button disabled={isPending} type="submit" size={"lg"} onClick={onCancel}>
