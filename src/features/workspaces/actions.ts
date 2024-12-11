@@ -3,6 +3,8 @@
 import { cookies } from "next/headers";
 import {
     Account, Client, Databases, Query} from "node-appwrite";
+import { getMember } from "../members/utils";
+import { WorkspaceType } from "./types";
 
 
 export const getWorkspaces = async () => {
@@ -47,5 +49,42 @@ export const getWorkspaces = async () => {
     } catch (err) {
         console.log(err)
         return { documents: [], total: 0 };
+    }
+}
+interface GetWorkspaceProps{
+    workspaceId: string
+}
+
+export const getWorkspace = async ({workspaceId}:GetWorkspaceProps) => {
+    try {
+        const client = new Client()
+            .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
+            .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
+
+        const session = (await cookies()).get("workman-session");
+        if (!session) {
+            return null;
+        }
+        client.setSession(session.value)
+        const databases = new Databases(client)
+        const account = new Account(client)
+        
+        const user = await account.get()
+
+        
+        const member = await getMember({databases: databases, workspaceId: workspaceId, userId: user.$id});
+        
+
+        if(!member) return null
+
+        const workspace = await databases.getDocument<WorkspaceType>(
+            process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+            process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID!,
+            workspaceId
+        )
+        return workspace
+    } catch (err) {
+        console.log("Reached here",err)
+        return null;
     }
 }

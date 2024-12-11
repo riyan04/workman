@@ -43,6 +43,8 @@ export async function POST (request: NextRequest) {
         );
         uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`
         // console.log(uploadedImageUrl)
+    } else{
+        uploadedImageUrl = image!
     }
 
     const inviteCode = generateInviteCode(6)
