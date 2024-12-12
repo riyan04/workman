@@ -16,14 +16,14 @@ export async function PATCH(request: NextRequest, {params}: {params: Params} ) {
 
     const userProperties = await getUserProperties();
     if (!userProperties) {
-        return NextResponse.json({ error: "Unable to get userProperties: ./api/workspace" }, { status: 501 })
+        return NextResponse.json({ error: "Unable to get userProperties: ./api/workspace/[workspaceId]:PATCH" }, { status: 501 })
     }
     const databases = userProperties?.databases
     const storage = userProperties?.storage
 
     const {workspaceId} = await params
     if(!workspaceId){
-        return NextResponse.json({ error: "Unable to get workspaceId: ./api/workspace/[workspaceId]" }, { status: 501 })
+        return NextResponse.json({ error: "Unable to get workspaceId: ./api/workspace/[workspaceId]:PATCH" }, { status: 501 })
     }
 
 
@@ -35,7 +35,7 @@ export async function PATCH(request: NextRequest, {params}: {params: Params} ) {
 
 
     if (!member || member.role !== MemberRole.ADMIN) {
-        return NextResponse.json({ error: "Unauthorized to update the workspace: ./api/workspace/[workspaceId]" }, { status: 401 })
+        return NextResponse.json({ error: "Unauthorized to update the workspace: ./api/workspace/[workspaceId]:PATCH" }, { status: 401 })
     }
 
     let uploadedImageUrl: string | undefined;
@@ -69,4 +69,37 @@ export async function PATCH(request: NextRequest, {params}: {params: Params} ) {
     )
 
     return NextResponse.json({data: workspace})
+}
+
+
+export async function DELETE(request: NextRequest, {params}: {params: Params}){
+    const userProperties = await getUserProperties()
+    if(!userProperties){
+        return NextResponse.json({ error: "Unable to get userProperties: ./api/workspace/[workspaceId]:DELETE" }, { status: 501 })
+    }
+    const databases = userProperties.databases
+    const userHeader = request.headers.get("user")
+    const user: Models.User<Models.Preferences> = JSON.parse(userHeader!);
+    const {workspaceId} = await params
+    if(!workspaceId){
+        return NextResponse.json({ error: "Unable to get workspaceId: ./api/workspace/[workspaceId]:DELETE" }, { status: 501 })
+    }
+    const member = await getMember({
+        databases: databases,
+        workspaceId: workspaceId,
+        userId: user.$id
+    });
+
+    if(!member || member.role !== MemberRole.ADMIN){
+        return NextResponse.json({ error: "Unauthorized to update the workspace: ./api/workspace/[workspaceId]:DELETE" }, { status: 401 })
+    }
+
+    // TODO: Delete Member, project & tasks
+    await databases.deleteDocument(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID!,
+        workspaceId
+    )
+
+    return NextResponse.json({data: {$id: workspaceId}})
 }
