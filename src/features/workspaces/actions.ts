@@ -61,17 +61,6 @@ interface GetWorkspaceProps{
 
 export const getWorkspace = async ({workspaceId}:GetWorkspaceProps) => {
     try {
-        // const client = new Client()
-        //     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
-        //     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
-
-        // const session = (await cookies()).get("workman-session");
-        // if (!session) {
-        //     return null;
-        // }
-        // client.setSession(session.value)
-        // const databases = new Databases(client)
-        // const account = new Account(client)
 
         const {account, databases} = await createSessionClient()
         
@@ -89,6 +78,28 @@ export const getWorkspace = async ({workspaceId}:GetWorkspaceProps) => {
             workspaceId
         )
         return workspace
+    } catch (err) {
+        console.log("Reached here",err)
+        return null;
+    }
+}
+
+
+interface GetWorkspaceInfoProps{
+    workspaceId: string
+}
+
+export const getWorkspaceInfo = async ({workspaceId}:GetWorkspaceInfoProps) => {
+    try {
+
+        const {databases} = await createSessionClient()
+
+        const workspace = await databases.getDocument<WorkspaceType>(
+            process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+            process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID!,
+            workspaceId
+        )
+        return {name: workspace.name}
     } catch (err) {
         console.log("Reached here",err)
         return null;
