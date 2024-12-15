@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
 import Navigation from "./Navigation"
 import WorkspaceSwitcher from "./WorkspaceSwitcher"
+import Projects from "./Projects"
 
 
 const Sidebar = () => {
@@ -18,6 +19,8 @@ const Sidebar = () => {
             <WorkspaceSwitcher />
             <Separator className=" my-4" />
             <Navigation />
+            <Separator className=" my-4" />
+            <Projects />
         </aside>
     )
 }

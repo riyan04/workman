@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { Models, Query } from "node-appwrite";
 
 export async function GET(request: NextRequest){
-    console.log("inside GET function")
     const {users} = await createAdminClient()
 
     const userHeader = request.headers.get("user")
@@ -21,7 +20,7 @@ export async function GET(request: NextRequest){
     if(!workspaceId){
         return NextResponse.json({error: "Unable to get workspaceId: ./api/members: GET"}, {status: 501})
     }
-    console.log("inside GET: ")
+    
 
     const member = await getMember({
         databases,
