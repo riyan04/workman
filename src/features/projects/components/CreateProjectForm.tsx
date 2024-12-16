@@ -23,12 +23,17 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ImageIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId"
+import { redirect } from "next/navigation"
 
 interface CreateProjectFormPorps {
     onCancel?: () => void
 };
 
 const CreateProjectForm = ({ onCancel }: CreateProjectFormPorps) => {
+
+    // const router = useRouter()
+    
+    
 
     const workspaceId = useWorkspaceId()
 
@@ -49,11 +54,12 @@ const CreateProjectForm = ({ onCancel }: CreateProjectFormPorps) => {
         };
 
         mutate(finalValues, {
-            onSuccess: () => {
+            onSuccess: ({data}) => {
                 // console.log("reached here, CreateWorkspaceForm")
                 form.reset();
-                onCancel?.();
-                // router.push(`/workspaces/${data.$id}`);
+                console.log(workspaceId)
+                console.log(data.$id)
+                redirect(`/workspaces/${workspaceId}/projects/${data.$id}`);
             }
         })
 

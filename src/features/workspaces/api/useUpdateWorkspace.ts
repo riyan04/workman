@@ -42,7 +42,9 @@ export const useUpdateWorkspace = () => {
         onSuccess: ({data}) => {
             toast.success("Workspace updated")
             // console.log("reached Here, useCreateWorkspace", data.$id)
-            router.push(`/workspaces/${data.$id}`)
+            // router.push(`/workspaces/${data.$id}`)
+
+            router.refresh()
 
             queryClient.invalidateQueries({queryKey: ["workspaces"]})
             queryClient.invalidateQueries({queryKey: ["workspace", data.$id]})
