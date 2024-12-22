@@ -21,7 +21,7 @@ import { Account, Client,
 
 export async function middleware(request: NextRequest){
 	if (request.nextUrl.pathname.startsWith('/api/auth/logout') || request.nextUrl.pathname.startsWith('/api/auth/get-user') 
-		|| request.nextUrl.pathname.startsWith('/api/workspaces') || request.nextUrl.pathname.startsWith('/api/members') || request.nextUrl.pathname.startsWith('/api/projects')) {
+		|| request.nextUrl.pathname.startsWith('/api/workspaces') || request.nextUrl.pathname.startsWith('/api/members') || request.nextUrl.pathname.startsWith('/api/projects') || request.nextUrl.pathname.startsWith('/api/tasks')) {
 		// console.log("into the middleware")
 		const client = new Client()
 			.setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
