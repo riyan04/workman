@@ -1,25 +1,57 @@
 import { useQuery } from "@tanstack/react-query";
 import { Models } from "node-appwrite";
+import { TaskStatus } from "../types";
 
 interface useGetTasksProps {
-    workspaceId: string
+    workspaceId: string,
+    projectId?: string | null,
+    status?: TaskStatus | null,
+    assigneeId?: string | null,
+    dueDate?: string | null
+    search?: string | null
 }
 
-export const useGetTasks = ({ workspaceId }: useGetTasksProps) => {
+export const useGetTasks = ({ workspaceId, projectId, status, assigneeId, dueDate, search }: useGetTasksProps) => {
+    let url = `http://localhost:3000/api/tasks?workspaceId=${workspaceId}`
+    if (projectId) {
+        url += `&projectId=${projectId}`
+    }
+    if (status) {
+        url += `&status=${status}`
+    }
+    if (assigneeId) {
+        url += `&assigneeId=${assigneeId}`
+    }
+    if (dueDate) {
+        url += `&dueDate=${dueDate}`
+    }
+    if (search) {
+        url += `&search=${search}`
+    }
     const query = useQuery({
-        queryKey: ["projects", workspaceId],
+        queryKey: ["tasks",
+            workspaceId,
+            projectId,
+            status,
+            search,
+            assigneeId,
+            dueDate
+        ],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/api/tasks?workspaceId=${workspaceId}`, {
-                // method: 'GET',
-                // body: JSON.stringify(workspaceId)
-                
-            })
+            const res = await fetch(
+                url,
+                {
+
+                    // method: 'GET',
+                    // body: JSON.stringify(workspaceId)
+
+                })
             if (!res.ok) {
                 // return null
                 // console.log("Res not ok!")
                 throw new Error("Failed to fetch tasks")
             }
-            const {data}: {data: Models.DocumentList<Models.Document>} = await res.json();
+            const { data }: { data: Models.DocumentList<Models.Document> } = await res.json();
             return data;
         }
 
