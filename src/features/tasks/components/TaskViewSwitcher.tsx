@@ -10,6 +10,8 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/useWorkspaceId"
 import { useQueryState } from "nuqs"
 import { DataFilters } from "./DataFilters"
 import { useTaskFilters } from "../hooks/useTaskFilters"
+import { DataTable } from "./DataTable"
+import { Columns } from "./Columns"
 
 
 const TaskViewSwitcher = () => {
@@ -60,7 +62,7 @@ const TaskViewSwitcher = () => {
                     : (
                         <>
                             <TabsContent value="table" className=" mt-0">
-                                {JSON.stringify(tasks)}
+                                <DataTable columns={Columns} data={tasks?.documents ?? []} />
                             </TabsContent>
                             <TabsContent value="kanban" className=" mt-0">
                                 {JSON.stringify(tasks)}
