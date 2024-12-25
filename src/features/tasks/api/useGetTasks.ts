@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Models } from "node-appwrite";
-import { Task, TaskStatus } from "../types";
+import { TaskType, TaskStatus } from "../types";
 
 interface useGetTasksProps {
     workspaceId: string,
@@ -51,7 +51,7 @@ export const useGetTasks = ({ workspaceId, projectId, status, assigneeId, dueDat
                 // console.log("Res not ok!")
                 throw new Error("Failed to fetch tasks")
             }
-            const { data }: { data: Models.DocumentList<Task> } = await res.json();
+            const { data }: { data: Models.DocumentList<TaskType> } = await res.json();
             // const { data }: { data: Models.DocumentList<Models.Document> } = await res.json();
             return data;
         }
