@@ -10,3 +10,13 @@ export const createTaskSchema = z.object({
     assigneeId: z.string().trim().min(1, "Required"),
     description: z.string().optional()
 })
+
+export const TaskBulkUpdateSchema = z.object({
+    tasks: z.array(
+        z.object({
+            $id: z.string(),
+            status: z.nativeEnum(TaskStatus),
+            position: z.number().int().positive().min(1000).max(1_000_000)
+        })
+    )
+})
