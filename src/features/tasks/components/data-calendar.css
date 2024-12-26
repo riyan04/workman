@@ -1,0 +1,20 @@
+.rbc-header{
+    @apply text-sm text-muted-foreground font-normal pb-4 border-b-0;
+}
+
+
+.rbc-header + .rbc-header{
+    @apply border-l-0
+}
+
+.rbc-button-link{
+    @apply text-xs font-normal text-muted-foreground
+}
+
+.rbc-month-row{
+    @apply min-h-[180px] border-t border-x;
+}
+
+.rbc-month-row:last-of-type{
+    @apply border-b rounded-b-md
+}
