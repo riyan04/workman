@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Models } from "../../../../node_modules/node-appwrite/dist/models.mjs";
 import { getMember } from "@/features/members/utils";
 import { ID, Query } from "node-appwrite";
+import { ProjectType } from "@/features/projects/types";
 
 export async function GET (request: NextRequest) {
     const userHeader = request.headers.get("user")
@@ -29,7 +30,7 @@ export async function GET (request: NextRequest) {
         return NextResponse.json({error: "Cannot get member: ./api/projects: GET"}, {status: 401})
     }
 
-    const projects = await databases.listDocuments(
+    const projects = await databases.listDocuments<ProjectType>(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_PROJECTS_ID!,
         [

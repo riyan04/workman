@@ -1,4 +1,5 @@
 import { getUserProperties } from "@/features/auth/actions";
+import { MemberType } from "@/features/members/types";
 import { getMember } from "@/features/members/utils";
 import { createAdminClient } from "@/lib/appwrite";
 import { NextRequest, NextResponse } from "next/server";
@@ -32,7 +33,7 @@ export async function GET(request: NextRequest){
         return NextResponse.json({error: "Cannot get member: ./api/members: GET"}, {status: 401})
     }
 
-    const members = await databases.listDocuments(
+    const members = await databases.listDocuments<MemberType>(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_MEMBERS_ID!,
         [
