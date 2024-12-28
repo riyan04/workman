@@ -4,7 +4,7 @@ import { ProjectType } from "@/features/projects/types";
 import { NextRequest, NextResponse } from "next/server";
 import { ID, Models } from "node-appwrite";
 
-interface Params {
+export interface Params {
     projectId: string;
 }
 

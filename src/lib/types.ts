@@ -15,3 +15,4 @@ export const signupSchema = z.object({
 export const memberRoleSchema = z.object({
     role: z.nativeEnum(MemberRole)
 })
+
