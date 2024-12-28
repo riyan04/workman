@@ -93,14 +93,7 @@ const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceFormPorps) 
             image: values.image instanceof File ? values.image : "",
         };
 
-        mutate({ form: finalValues, workspaceId: initialValues.$id }, {
-            onSuccess: () => {
-                // console.log("reached here, CreateWorkspaceForm")
-                form.reset();
-                onCancel?.();
-                // router.push(`/workspaces/${data.$id}`);
-            }
-        })
+        mutate({ form: finalValues, workspaceId: initialValues.$id })
 
     }
 

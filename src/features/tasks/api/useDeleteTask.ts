@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 
@@ -12,7 +11,6 @@ type ResType = {data: {$id: string}}
 
 
 export const useDeleteTask = () => {
-    const router = useRouter()
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async({taskId}) => {
@@ -24,7 +22,6 @@ export const useDeleteTask = () => {
         },
         onSuccess: ({data}) => {
             toast.success("Task deleted")
-            router.refresh()
             queryClient.invalidateQueries({queryKey: ["tasks"]})
             queryClient.invalidateQueries({queryKey: ["task", data.$id]})
         },

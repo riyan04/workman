@@ -79,11 +79,7 @@ const EditProjectForm = ({ onCancel, initialValues }: EditProjectFormPorps) => {
             image: values.image instanceof File ? values.image : "",
         };
 
-        mutate({ form: finalValues, projectId: initialValues.$id }, {
-            onSuccess: () => {
-                form.reset();
-            }
-        })
+        mutate({ form: finalValues, projectId: initialValues.$id })
 
     }
 

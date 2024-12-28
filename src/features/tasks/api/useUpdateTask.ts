@@ -7,7 +7,6 @@ import { z } from "zod";
 import { toast } from "sonner";
 // import { Models } from "node-appwrite";
 import { TaskType } from "../types";
-import { useRouter } from "next/navigation";
 
 interface RequestProps {
     json: z.infer<typeof createTaskSchema>;
@@ -22,7 +21,6 @@ type ResType = {data: TaskType}
 
 
 export const useUpdateTask = () => {
-    const router = useRouter()
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async({json, taskId}) => {
@@ -37,8 +35,6 @@ export const useUpdateTask = () => {
         },
         onSuccess: ({data}) => {
             toast.success("Task updated")
-            
-            router.refresh()
 
 
             queryClient.invalidateQueries({queryKey: ["tasks"]})

@@ -27,16 +27,23 @@ export const TaskDescription = ({task}:TaskDescriptionProps) => {
     */
 
     const handleSave = () => {
-        mutate({json:{
-            name: task.name,
-            status: task.status,
-            workspaceId: task.workspaceId,
-            projectId: task.projectId,
-            assigneeId: task.assigneeId,
-            dueDate: new Date(task.dueDate),
-            description: value
-        } , taskId: task.$id})
-        setIsEditing((prev) => !prev)
+        mutate({
+            json:{
+                name: task.name,
+                status: task.status,
+                workspaceId: task.workspaceId,
+                projectId: task.projectId,
+                assigneeId: task.assigneeId,
+                dueDate: new Date(task.dueDate),
+                description: value
+            } , 
+            taskId: task.$id
+        }, {
+            onSuccess: () => {
+                setIsEditing((prev) => !prev)
+            }
+        })
+        
     }
 
   return (

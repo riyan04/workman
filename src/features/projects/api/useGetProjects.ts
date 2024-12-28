@@ -18,7 +18,7 @@ export const useGetProjects = ({ workspaceId }: useGetProjectsProps) => {
             if (!res.ok) {
                 // return null
                 // console.log("Res not ok!")
-                throw new Error("Failed to fetch members")
+                throw new Error("Failed to fetch projects")
             }
             // const {data}: {data: Models.DocumentList<Models.Document>} = await res.json();
             const {data}: {data: Models.DocumentList<ProjectType>} = await res.json();

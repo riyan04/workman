@@ -1,27 +1,18 @@
 import { getUser } from '@/features/auth/actions';
-import { getProject } from '@/features/projects/actions';
-import EditProjectForm from '@/features/projects/components/EditProjectForm';
 import { redirect } from 'next/navigation';
 import React from 'react'
+import { ProjectIdSettingsClient } from './client';
 
-interface ProjectIdSettingsPageProps{
-    params: {
-        projectId: string
-    }
-}
 
-const ProjectIdSettingsPage = async ({params}: ProjectIdSettingsPageProps) => {
+
+const ProjectIdSettingsPage = async () => {
     const user = await getUser();
     if (!user) {
         redirect("/sign-in")
     }
-    const {projectId} = await params
-    const initialValues = await getProject({projectId})
-    if(!initialValues){
-        throw new Error("Project not found")
-    }
+   
     return (
-        <div className=" w-full lg:max-w-xl"><EditProjectForm initialValues={initialValues}/></div>
+        <ProjectIdSettingsClient />
     )
 }
 
