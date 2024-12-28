@@ -17,13 +17,14 @@ import { useCallback } from "react"
 import { TaskStatus } from "../types"
 import { useBulkUpdateTasks } from "../api/useBulkUpdateTasks"
 import { DataCalendar } from "./DataCalendar"
+import { useProjectId } from "@/features/projects/hooks/useProjectId"
 
 
-interface TaskViewSwitcherProps{
+interface TaskViewSwitcherProps {
     hideProjectFilter?: boolean
 }
 
-const TaskViewSwitcher = ({hideProjectFilter}: TaskViewSwitcherProps) => {
+const TaskViewSwitcher = ({ hideProjectFilter }: TaskViewSwitcherProps) => {
     const [{
         status,
         assigneeId,
@@ -34,16 +35,23 @@ const TaskViewSwitcher = ({hideProjectFilter}: TaskViewSwitcherProps) => {
         defaultValue: "table"
     })
     const workspaceId = useWorkspaceId()
+    const paramProjectId = useProjectId()
     const { open } = useCreateTaskModal()
-    const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({ workspaceId, projectId, assigneeId, status, dueDate })
+    const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
+        workspaceId,
+        projectId: paramProjectId || projectId,
+        assigneeId,
+        status,
+        dueDate
+    })
 
-    const {mutate: bulkUpdate} = useBulkUpdateTasks()
+    const { mutate: bulkUpdate } = useBulkUpdateTasks()
 
     const onKanbanChange = useCallback((
         tasks: { $id: string; status: TaskStatus; position: number }[]
     ) => {
-        bulkUpdate({json:{tasks}})
-    },[bulkUpdate])
+        bulkUpdate({ json: { tasks } })
+    }, [bulkUpdate])
 
     return (
         <Tabs
@@ -70,7 +78,7 @@ const TaskViewSwitcher = ({hideProjectFilter}: TaskViewSwitcherProps) => {
                     </Button>
                 </div>
                 <Separator className=" my-4" />
-                    <DataFilters hideProjectFilter={hideProjectFilter} />
+                <DataFilters hideProjectFilter={hideProjectFilter} />
                 <Separator className=" my-4" />
                 {isLoadingTasks
                     ? (<div className=" w-full rounded-lg h-[200px] flex flex-col items-center justify-center">
