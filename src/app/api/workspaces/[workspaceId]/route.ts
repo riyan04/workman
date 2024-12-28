@@ -10,7 +10,10 @@ interface Params {
     workspaceId: string;
 }
 
-export async function GET(request: NextRequest, { params }: { params: Params }) {
+export async function GET(
+    request: NextRequest, 
+    { params }: { params: Promise<Params> },
+) {
     const userHeader = request.headers.get("user")
     const user: Models.User<Models.Preferences> = JSON.parse(userHeader!);
 
@@ -39,7 +42,10 @@ export async function GET(request: NextRequest, { params }: { params: Params }) 
 
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: Params }) {
+export async function PATCH(
+    request: NextRequest, 
+    { params }: { params: Promise<Params> },
+) {
 
     const userHeader = request.headers.get("user")
     const user: Models.User<Models.Preferences> = JSON.parse(userHeader!);
@@ -102,7 +108,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
 }
 
 
-export async function DELETE(request: NextRequest, { params }: { params: Params }) {
+export async function DELETE(
+    request: NextRequest, 
+    { params }: { params: Promise<Params> },
+) {
     const userProperties = await getUserProperties()
     if (!userProperties) {
         return NextResponse.json({ error: "Unable to get userProperties: ./api/workspace/[workspaceId]:DELETE" }, { status: 501 })

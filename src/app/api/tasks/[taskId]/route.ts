@@ -5,11 +5,16 @@ import { TaskType } from "@/features/tasks/types";
 import { getMember } from "@/features/members/utils";
 import { createAdminClient } from "@/lib/appwrite";
 import { ProjectType } from "@/features/projects/types";
+
+
 interface Params {
     taskId: string;
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Params }) {
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: Promise<Params> },
+) {
     const userHeader = request.headers.get("user")
     const user: Models.User<Models.Preferences> = JSON.parse(userHeader!);
     const userProperties = await getUserProperties();
@@ -17,7 +22,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
         return NextResponse.json({ error: "Unable to get userProperties: ./api/tasks/[taskId]: DELETE" }, { status: 501 })
     }
     const databases = userProperties.databases
-    const {taskId} = await params
+    const { taskId } = await params
 
     const task = await databases.getDocument<TaskType>(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
@@ -41,12 +46,15 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
         taskId
     )
 
-    return NextResponse.json({data: {$id: task.$id}})
+    return NextResponse.json({ data: { $id: task.$id } })
 }
 
 
 
-export async function PATCH(request: NextRequest, { params }: { params: Params }) {
+export async function PATCH(
+    request: NextRequest,
+    { params }: { params: Promise<Params> },
+) {
     const userHeader = request.headers.get("user")
     const user: Models.User<Models.Preferences> = JSON.parse(userHeader!);
 
@@ -58,7 +66,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
 
     const { name, status, description, projectId, dueDate, assigneeId } = await request.json()
 
-    const {taskId} = await params
+    const { taskId } = await params
 
     const existingTask = await databases.getDocument<TaskType>(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
@@ -78,7 +86,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
 
 
 
-    
+
     const task = await databases.updateDocument<TaskType>(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_TASKS_ID!,
@@ -96,7 +104,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Params }
     return NextResponse.json({ data: task })
 }
 
-export async function GET(request: NextRequest, { params }: { params: Params }){
+export async function GET(
+    request: NextRequest,
+     { params }: { params: Promise<Params> },
+) {
     const userHeader = request.headers.get("user")
     const currentUser: Models.User<Models.Preferences> = JSON.parse(userHeader!);
     const userProperties = await getUserProperties()
@@ -104,8 +115,8 @@ export async function GET(request: NextRequest, { params }: { params: Params }){
         return NextResponse.json({ error: "Unable to get userProperties: ./api/tasks/[taskId]: GET" }, { status: 501 })
     }
     const databases = userProperties.databases
-    const {users} = await createAdminClient()
-    const {taskId} = await params
+    const { users } = await createAdminClient()
+    const { taskId } = await params
 
     const task = await databases.getDocument<TaskType>(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
@@ -153,5 +164,5 @@ export async function GET(request: NextRequest, { params }: { params: Params }){
     return NextResponse.json({
         data: res,
     })
-    
+
 }

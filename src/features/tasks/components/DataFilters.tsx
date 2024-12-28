@@ -48,9 +48,9 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
     const onProjectIdChange = (value: string) => {
         setFilters({projectId: value === "all" ? null : value as string})
     }
-    const onDueDateChange = (value: string) => {
-        setFilters({dueDate: value === "all" ? null : value as string})
-    }
+    // const onDueDateChange = (value: string) => {
+    //     setFilters({dueDate: value === "all" ? null : value as string})
+    // }
 
     if(isLoading){
         return null
@@ -114,7 +114,7 @@ export const DataFilters = ({ hideProjectFilter }: DataFiltersProps) => {
                 !hideProjectFilter && (
 
                 <Select
-                    defaultValue={assigneeId ?? undefined}
+                    defaultValue={projectId ?? undefined}
                     onValueChange={(value)=>{onProjectIdChange(value)}}
                 >
                     <SelectTrigger className=" w-full lg:w-auto h-8">

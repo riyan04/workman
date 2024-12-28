@@ -11,7 +11,10 @@ interface Params {
     projectId: string;
 }
 
-export async function GET(request: NextRequest, { params }: { params: Params }) {
+export async function GET(
+    request: NextRequest, 
+    { params }: { params: Promise<Params> },
+) {
     const userHeader = request.headers.get("user")
     const user: Models.User<Models.Preferences> = JSON.parse(userHeader!);
 

@@ -8,7 +8,11 @@ interface Params {
     memberId: string
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Params }) {
+export async function DELETE(
+    request: NextRequest, 
+    {params}: {params: Promise<Params>}
+) {
+// export async function DELETE(request: NextRequest, { params }: { params: Params }) {
 
     const { memberId } = await params
     const userHeader = request.headers.get("user")
@@ -63,7 +67,10 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
 
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: Params }){
+export async function PATCH(
+    request: NextRequest,
+    { params }: { params: Promise<Params> },
+){
     const { memberId } = await params
     const userHeader = request.headers.get("user")
     const user: Models.User<Models.Preferences> = JSON.parse(userHeader!);

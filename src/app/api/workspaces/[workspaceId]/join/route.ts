@@ -9,7 +9,10 @@ interface Params {
     workspaceId: string;
 }
 
-export async function POST(request: NextRequest, { params }: { params: Params }) {
+export async function POST(
+    request: NextRequest, 
+    { params }: { params: Promise<Params> },
+) {
     const { workspaceId } = await params
     const { code } = await request.json()
     const userProperties = await getUserProperties()
