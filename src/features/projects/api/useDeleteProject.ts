@@ -1,4 +1,5 @@
 
+import { rootUrl } from "@/lib/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { toast } from "sonner";
@@ -17,7 +18,7 @@ export const useDeleteProject = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async({projectId}) => {
-            const response = await fetch(`http://localhost:3000/api/projects/${projectId}`, {
+            const response = await fetch(`${rootUrl}/api/projects/${projectId}`, {
                 method: 'DELETE',
                 // body: formData
             })

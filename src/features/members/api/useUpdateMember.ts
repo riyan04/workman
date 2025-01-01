@@ -2,6 +2,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { MemberRole } from "../types";
+import { rootUrl } from "@/lib/constants";
 // import { z } from "zod";
 // import { memberRoleSchema } from "@/lib/types";
 
@@ -21,7 +22,7 @@ export const useUpdateMember = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async({memberId, role}) => {
-            const response = await fetch(`http://localhost:3000/api/members/${memberId}`, {
+            const response = await fetch(`${rootUrl}/api/members/${memberId}`, {
                 method: 'PATCH',
                 body: JSON.stringify(role)
             })

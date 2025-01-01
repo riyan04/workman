@@ -2,6 +2,7 @@
 
 // import { POST } from "@/app/api/workspaces/route"
 // import { updateWorkspaceSchema } from "../schemas";
+import { rootUrl } from "@/lib/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 // import { z } from "zod";
 import { toast } from "sonner";
@@ -29,7 +30,7 @@ export const useDeleteWorkspace = () => {
             // const formData = new FormData()
             // formData.append("name", form.name!)
             // formData.append("image", form.image!)
-            const response = await fetch(`http://localhost:3000/api/workspaces/${workspaceId}`, {
+            const response = await fetch(`${rootUrl}/api/workspaces/${workspaceId}`, {
                 method: 'DELETE',
                 // body: formData
             })

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Models } from "node-appwrite";
 import { TaskType, TaskStatus } from "../types";
+import { rootUrl } from "@/lib/constants";
 
 interface useGetTasksProps {
     workspaceId: string,
@@ -12,7 +13,7 @@ interface useGetTasksProps {
 }
 
 export const useGetTasks = ({ workspaceId, projectId, status, assigneeId, dueDate, search }: useGetTasksProps) => {
-    let url = `http://localhost:3000/api/tasks?workspaceId=${workspaceId}`
+    let url = `${rootUrl}/api/tasks?workspaceId=${workspaceId}`
     if (projectId) {
         url += `&projectId=${projectId}`
     }

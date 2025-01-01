@@ -1,3 +1,4 @@
+import { rootUrl } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 
 interface useGetMembersProps {
@@ -10,7 +11,7 @@ export const useGetMembers = ({ workspaceId }: useGetMembersProps) => {
         queryFn: async () => {
             console.log("inside the useGetMember")
             console.log(workspaceId)
-            const res = await fetch(`http://localhost:3000/api/members?workspaceId=${workspaceId}`, {
+            const res = await fetch(`${rootUrl}/api/members?workspaceId=${workspaceId}`, {
                 // method: 'GET',
                 // body: JSON.stringify(workspaceId)
                 

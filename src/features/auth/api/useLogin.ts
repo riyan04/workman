@@ -1,5 +1,6 @@
 
 import { POST } from "@/app/api/auth/login/route";
+import { rootUrl } from "@/lib/constants";
 import { loginSchema } from "@/lib/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ export const useLogin = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async(json) => {
-            const response = await fetch('http://localhost:3000/api/auth/login', {
+            const response = await fetch(`${rootUrl}/api/auth/login`, {
                 method: 'POST',
                 body: JSON.stringify(json)
             })

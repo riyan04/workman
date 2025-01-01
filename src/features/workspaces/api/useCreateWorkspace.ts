@@ -7,6 +7,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { Models } from "node-appwrite";
 import { useRouter } from "next/navigation";
+import { rootUrl } from "@/lib/constants";
 
 type RequestProps =  z.infer<typeof createWorkspaceSchema>
 // type ResponseProps = {
@@ -25,7 +26,7 @@ export const useCreateWorkspace = () => {
             const formData = new FormData()
             formData.append("name", form.name)
             formData.append("image", form.image!)
-            const response = await fetch('http://localhost:3000/api/workspaces', {
+            const response = await fetch(`${rootUrl}/api/workspaces`, {
                 method: 'POST',
                 body: formData
             })

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { TaskType } from "../types";
 import { TaskBulkUpdateSchema } from "@/features/tasks/schemas";
+import { rootUrl } from "@/lib/constants";
 
 interface RequestProps {
     json: z.infer<typeof TaskBulkUpdateSchema>;
@@ -17,7 +18,7 @@ export const useBulkUpdateTasks = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async({json}) => {
-            const response = await fetch(`http://localhost:3000/api/tasks/bulk-update`, {
+            const response = await fetch(`${rootUrl}/api/tasks/bulk-update`, {
                 method: 'POST',
                 body: JSON.stringify(json)
             })

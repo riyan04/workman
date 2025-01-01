@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Models } from "node-appwrite";
 import { ProjectType } from "../types";
+import { rootUrl } from "@/lib/constants";
 
 interface useGetProjectsProps {
     workspaceId: string
@@ -10,7 +11,7 @@ export const useGetProjects = ({ workspaceId }: useGetProjectsProps) => {
     const query = useQuery({
         queryKey: ["projects", workspaceId],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/api/projects?workspaceId=${workspaceId}`, {
+            const res = await fetch(`${rootUrl}/api/projects?workspaceId=${workspaceId}`, {
                 // method: 'GET',
                 // body: JSON.stringify(workspaceId)
                 

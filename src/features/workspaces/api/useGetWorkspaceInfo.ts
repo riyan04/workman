@@ -1,3 +1,4 @@
+import { rootUrl } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 
 interface useGetWorkspaceInfoProps {
@@ -8,7 +9,7 @@ export const useGetWorkspaceInfo = ({ workspaceId }: useGetWorkspaceInfoProps) =
     const query = useQuery({
         queryKey: ["workspace-info", workspaceId],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/api/workspaces/${workspaceId}/info`)
+            const res = await fetch(`${rootUrl}/api/workspaces/${workspaceId}/info`)
             if (!res.ok) {
                 throw new Error("Failed to fetch workspace info")
             }

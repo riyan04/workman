@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Models } from "node-appwrite";
+import { rootUrl } from "@/lib/constants";
 
 type RequestProps =  z.infer<typeof createTaskSchema>
 // type ResponseProps = {
@@ -20,7 +21,7 @@ export const useCreateTask = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async(json) => {
-            const response = await fetch('http://localhost:3000/api/tasks', {
+            const response = await fetch(`${rootUrl}/api/tasks`, {
                 method: 'POST',
                 body: JSON.stringify(json)
             })

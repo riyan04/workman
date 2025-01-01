@@ -1,4 +1,5 @@
 import { ProjectAnalyticsType } from "@/features/projects/types";
+import { rootUrl } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 
 interface useGetWorkspaceAnalyticsProps {
@@ -9,7 +10,7 @@ export const useGetWorkspaceAnalytics = ({ workspaceId }: useGetWorkspaceAnalyti
     const query = useQuery({
         queryKey: ["workspace-analytics", workspaceId],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/api/workspaces/${workspaceId}/analytics`)
+            const res = await fetch(`${rootUrl}/api/workspaces/${workspaceId}/analytics`)
             if (!res.ok) {
                 throw new Error("Failed to fetch workspace analytics")
             }

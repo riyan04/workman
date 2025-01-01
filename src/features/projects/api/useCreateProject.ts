@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Models } from "node-appwrite";
+import { rootUrl } from "@/lib/constants";
 
 type RequestProps =  z.infer<typeof createProjectSchema>
 // type ResponseProps = {
@@ -24,7 +25,7 @@ export const useCreateProject = () => {
             formData.append("name", form.name)
             formData.append("image", form.image!)
             formData.append("workspaceId", form.workspaceId)
-            const response = await fetch('http://localhost:3000/api/projects', {
+            const response = await fetch(`${rootUrl}/api/projects`, {
                 method: 'POST',
                 body: formData
             })

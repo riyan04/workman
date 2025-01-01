@@ -9,6 +9,7 @@ import { toast } from "sonner";
 // import { Models } from "node-appwrite";
 import { WorkspaceType } from "../types";
 import { useRouter } from "next/navigation";
+import { rootUrl } from "@/lib/constants";
 
 
 
@@ -29,7 +30,7 @@ export const useJoinWorkspace = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async({code ,workspaceId}) => {
-            const response = await fetch(`http://localhost:3000/api/workspaces/${workspaceId}/join`, {
+            const response = await fetch(`${rootUrl}/api/workspaces/${workspaceId}/join`, {
                 method: 'POST',
                 body: JSON.stringify({code: code})
             })

@@ -7,6 +7,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 // import { Models } from "node-appwrite";
 import { TaskType } from "../types";
+import { rootUrl } from "@/lib/constants";
 
 interface RequestProps {
     json: z.infer<typeof createTaskSchema>;
@@ -24,7 +25,7 @@ export const useUpdateTask = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async({json, taskId}) => {
-            const response = await fetch(`http://localhost:3000/api/tasks/${taskId}`, {
+            const response = await fetch(`${rootUrl}/api/tasks/${taskId}`, {
                 method: 'PATCH',
                 body: JSON.stringify(json)
             })

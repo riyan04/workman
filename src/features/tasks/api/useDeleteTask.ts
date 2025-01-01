@@ -1,3 +1,4 @@
+import { rootUrl } from "@/lib/constants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -14,7 +15,7 @@ export const useDeleteTask = () => {
     const queryClient = useQueryClient()
     const mutation = useMutation<ResType ,Error, RequestProps>({
         mutationFn: async({taskId}) => {
-            const response = await fetch(`http://localhost:3000/api/tasks/${taskId}`, {
+            const response = await fetch(`${rootUrl}/api/tasks/${taskId}`, {
                 method: 'DELETE',
             })
             const res: {data: {$id: string}} = await response.json()

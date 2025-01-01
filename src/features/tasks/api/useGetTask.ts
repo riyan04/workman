@@ -1,3 +1,4 @@
+import { rootUrl } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 // import { Models } from "node-appwrite";
 // import { TaskType, TaskStatus } from "../types";
@@ -14,7 +15,7 @@ export const useGetTask = ({ taskId }: useGetTaskProps) => {
             taskId
         ],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:3000/api/tasks/${taskId}`)
+            const res = await fetch(`${rootUrl}/api/tasks/${taskId}`)
             if (!res.ok) {
                 // return null
                 // console.log("Res not ok!")
