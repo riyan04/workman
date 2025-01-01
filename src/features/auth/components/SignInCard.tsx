@@ -26,8 +26,8 @@ import { Separator } from "@/components/ui/separator"
 
 import Image from "next/image"
 
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
+// import { FcGoogle } from "react-icons/fc";
+// import { FaGithub } from "react-icons/fa";
 import Link from "next/link"
 import { useLogin } from "../api/useLogin"
 
@@ -99,14 +99,14 @@ export const SignInCard = () => {
 
             </CardContent>
 
-            <div className="px-7">
+            {/* <div className="px-7">
                 <Separator />
             </div>
 
             <CardContent className=" p-7 flex items-center justify-center gap-2">
                 <Button disabled={isPending} variant={"secondary"}> <FcGoogle />Login with Google</Button>
                 <Button disabled={isPending} variant={"secondary"}> <FaGithub />Login with GitHub</Button>
-            </CardContent>
+            </CardContent> */}
 
             <div className="px-7">
                 <Separator />
